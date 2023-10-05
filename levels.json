@@ -2,15 +2,17 @@
     {
         "level": 1,
         "maxObstacles": 1,
-        "maxHoles": 1
+        "maxHoles": 0
     },
     {
         "level": 2,
-        "maxObstacles": 2
+        "maxObstacles": 2,
+        "maxHoles": 0
     },
     {
         "level": 3,
-        "maxObstacles": 3
+        "maxObstacles": 3,
+        "maxHoles": 0
     },
     {
         "level": 4,
