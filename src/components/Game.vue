@@ -111,24 +111,7 @@ export default {
       }
 
     },
-    // Funzione di aggiornamento del gioco (chiamata ad intervalli regolari)
-    // updateGame() {
-    //   // Verifica la collisione tra il personaggio e gli ostacoli
-    //   this.obstacles.forEach((obstacle) => {
-    //     if (
-    //       this.playerPosition + this.playerWidth >= obstacle.positionX &&
-    //       this.playerPosition <= obstacle.positionX + obstacle.width
-    //     ) {
-    //       // Il personaggio è in contatto con l'ostacolo, blocca il movimento orizzontale
-    //       this.playerSpeedX = 0;
-    //     }
-    //   });
 
-    //   // Continua a muovere il personaggio se non c'è collisione
-    //   if (this.playerSpeedX !== 0) {
-    //     this.movePlayer(this.playerSpeedX);
-    //   }
-    // },
     updateGame() {
   // Verifica collisioni
     let isColliding = false;
@@ -142,7 +125,7 @@ export default {
         this.playerPosition <= obstacle.positionX + this.obstacleWidth &&
         playerBottom <= this.obstacleHeigth
       ){
-        // Il personaggio è in contatto con l'ostacolo, segna la collisione ma non bloccare il personaggio
+       
         isColliding = true;
       
       }
@@ -155,11 +138,7 @@ export default {
     
       
     }
-    //console.log(this.gameOver)
-  // Continua a muovere il personaggio se non c'è collisione
-  // if (this.playerSpeed !== 0) {
-  //   this.movePlayer(this.playerSpeed);
-  // }
+
 },
 restart(){
   this.playerPosition=0;
@@ -231,4 +210,7 @@ nextLevel() {
     transform: translate(-50%, -50%);
     text-align: center;
   }
+  body::-webkit-scrollbar {
+  display: none;
+}
 </style>
