@@ -20,7 +20,7 @@ export default {
       currentLevel:1,
       endLevel: window.innerWidth,
       levels: levels,
-     // isRunning:false,
+      isRunning:false,
     };
   },
   mounted() {
@@ -66,18 +66,21 @@ export default {
       }
        // Se il giocatore si muove verso destra, imposta l'animazione di corsa
        const playerElement = document.getElementById('player');
-  if (direction > 0) {
-    // Muovi il giocatore verso destra
-    playerElement.style.transform = 'scaleX(1)'; // Imposta la direzione del giocatore
-    playerElement.classList.add('run-animation'); // Aggiungi classe di animazione
-  } else if (direction < 0) {
-    // Muovi il giocatore verso sinistra
-    playerElement.style.transform = 'scaleX(-1)'; // Imposta la direzione del giocatore
-    playerElement.classList.add('run-animation'); // Aggiungi classe di animazione
-  } else {
-    // Il giocatore è fermo
-    playerElement.classList.remove('run-animation'); // Rimuovi classe di animazione
-  }
+      if (direction > 0) {
+        // Muovi il giocatore verso destra
+        playerElement.style.transform = 'scaleX(1)'; // Imposta la direzione del giocatore
+        this.isRunning = true; // Aggiungi classe di animazione
+      } else if (direction < 0) {
+        // Muovi il giocatore verso sinistra
+        playerElement.style.transform = 'scaleX(-1)'; // Imposta la direzione del giocatore
+        this.isRunning = true; // Aggiungi classe di animazione
+      } else { 
+        // Il giocatore è fermo NON CI ENTRO MAI, NON RIESCO A PASSARE DA RUN A IDLE
+        this.isRunning = false;
+       
+        document.getElementById('player').classList.remove('run-animation');
+        document.getElementById('player').classList.add('idle-sprite');
+      }
     },
  
 
@@ -264,7 +267,7 @@ nextLevel() {
 </script>
 <template lang="">
   <div class="game-bg">
-    <div id="player" class="idle-sprite" :style="{ left: playerPosition + 'px' }"  ></div>
+    <div id="player"  :style="{ left: playerPosition + 'px' }"  :class="{ 'run-animation': isRunning }"></div>
     <div class="obstacle-wrapper col-8 offset-2"></div>
     <div class="hole-wrapper"></div>
     <div class="game-over" v-if="gameOver">
@@ -284,28 +287,28 @@ nextLevel() {
     position:relative;
   }
   .run-animation {
-  animation: animateRun 0.3s steps(9) infinite;
-}
-
-/* Imposta l'immagine di sfondo del giocatore */
-#player {
- 
-    width: 100px;
-    height: 190px;
-    position: absolute;
-    bottom: 0;
+    animation: run-animation 0.5s steps(9) infinite;
     background-image: url(spritesheet-run.png);
     background-repeat: no-repeat;
     /* background-position: -11px 100px; */
-    animation: run-animation 0.5s steps(9) infinite;
-    background-size: 1095px 140px;
+    background-size: 1113px 140px;
+  }
+
+/* Imposta l'immagine di sfondo del giocatore */
+#player {
+  width: 109px;
+    height: 190px;
+    position: absolute;
+    bottom: 0;
+  
 }
 @keyframes run-animation {
   0% {
-    background-position: 0 0;
+    background-position:  0px 60px;;
   }
   100% {
-    background-position: -1000px 100px; /* Imposta la posizione finale in base ai tuoi frame */
+    background-position: -1000px 60px; /* Imposta la posizione finale in base ai tuoi frame */
+   
   }
 }
 
