@@ -1,7 +1,8 @@
 [
     {
         "level": 1,
-        "maxObstacles": 1
+        "maxObstacles": 1,
+        "maxHoles": 1
     },
     {
         "level": 2,
@@ -9,10 +10,21 @@
     },
     {
         "level": 3,
-        "maxObstacles": 4
+        "maxObstacles": 3
     },
     {
         "level": 4,
-        "maxObstacles": 6
+        "maxObstacles": 3,
+        "maxHoles": 1
+    },
+    {
+        "level": 5,
+        "maxObstacles": 4,
+        "maxHoles": 1
+    },
+    {
+        "level": 6,
+        "maxObstacles": 3,
+        "maxHoles": 2
     }
 ]
