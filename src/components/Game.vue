@@ -1,4 +1,5 @@
 <script>
+import levels from '../../levels.json'
 export default {
   data() {
     return {
@@ -14,6 +15,7 @@ export default {
       gameOver:false,
       currentLevel:1,
       endLevel: window.innerWidth,
+      levels: levels,
     };
   },
   mounted() {
@@ -50,10 +52,12 @@ export default {
       const playerWidth = document.getElementById('player').offsetWidth;
       if (this.playerPosition < 0) {
         this.playerPosition = 0;
-      } else if (this.playerPosition + playerWidth > gameContainerWidth) {
-        this.playerPosition = gameContainerWidth - playerWidth;
-      }else if(this.playerPosition >= this.endLevel ){
+      }
+      //  else if (this.playerPosition + playerWidth > gameContainerWidth) {
+      //   this.playerPosition = gameContainerWidth - playerWidth;
+      else if(this.playerPosition >= this.endLevel ){
         console.log('hai finito il livello')
+        this.nextLevel()
       }
     },
       //FUNZIONA
@@ -89,7 +93,7 @@ export default {
     initializeGame(){
   
       var maxPositionX = window.innerWidth;
-      var NumberObstacles = Math.floor(Math.random()* (4 - 1 +1))+1
+      var NumberObstacles =  this.levels.find(level => level.level === this.currentLevel).maxObstacles;
       const safeZoneWidth = 180;
      
       var obstacleWrapper= document.querySelector('.obstacle-wrapper');
@@ -147,6 +151,7 @@ export default {
     if (isColliding) {
       this.gameOver = true;
       this.playerSpeed=0;
+      this.jumpHeight=0;
     
       
     }
@@ -160,9 +165,24 @@ restart(){
   this.playerPosition=0;
   this.playerSpeed=10;
   this.obstacles=[];
+  this.currentLevel=1;
   this.gameOver= false;
+  this.jumpHeight=100;
   this.initializeGame();
-}
+},
+
+//funzione passaggio a livello successivo
+nextLevel() {
+    // Incrementa il livello corrente
+    this.currentLevel++;
+
+    // Reimposta il giocatore e inizializza il nuovo livello
+    this.playerPosition = 0;
+    this.playerSpeed = 10;
+    this.obstacles = [];
+    this.gameOver = false;
+    this.initializeGame();
+  },
 
 }
 
@@ -173,8 +193,11 @@ restart(){
     <div id="player" :style="{ left: playerPosition + 'px' }"></div>
     <div class="obstacle-wrapper col-8 offset-2"></div>
     <div class="game-over" v-if="gameOver">
-    <h1>Game-Over</h1>
+      <h1>Game-Over</h1>
     <button class="btn btn-warning" @click="restart()">restart</button>
+    </div>
+    <div>
+      <h2>Livello: {{currentLevel}}</h2>
     </div>
   </div>
 </template>
