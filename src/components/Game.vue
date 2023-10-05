@@ -62,11 +62,16 @@ export default {
         console.log('hai finito il livello')
         this.nextLevel()
       }
+  
     },
+ 
+
       //FUNZIONA
     startJump(){
       this.isJumping = true;
       this.movePlayerUp();
+      document.getElementById('player').classList.add('player-jumping'); // Aggiungi la classe
+
       setTimeout(()=>{
         this.endJump();
       }, 500)
@@ -76,6 +81,8 @@ export default {
 
     endJump(){
       this.isJumping= false;
+      document.getElementById('player').classList.remove('player-jumping'); // Rimuovi la classe
+
       this.movePlayerDown();
     },
     //funzione che determina il salto
@@ -84,13 +91,16 @@ export default {
       var newY = currentY + this.jumpHeight;
       document.getElementById('player').style.bottom= newY + 'px';
       this.playerSpeed = 100
-      
     },
     //riporta player a terra
     movePlayerDown(){
       document.getElementById('player').style.bottom= '0px';
       this.playerSpeed = 10
     },
+
+  
+   
+    
 
     //genera ostacoli ad inizio partita
     initializeGame(){
@@ -170,6 +180,7 @@ export default {
       this.gameOver = true;
       this.playerSpeed=0;
       this.jumpHeight=0;
+      document.getElementById('player').classList.remove('player-jumping');
     
       
     }
@@ -198,7 +209,8 @@ export default {
     this.gameOver = true;
       this.playerSpeed=0;
       this.jumpHeight=0;
-    document.getElementById('player').style.bottom = newBottomPosition + 'px';
+      document.getElementById('player').classList.remove('player-jumping');
+     document.getElementById('player').style.bottom = newBottomPosition + 'px';
   }
 },
 restart(){
@@ -290,4 +302,22 @@ nextLevel() {
     width: 80px;
     height: 180px;
 }
+
+@keyframes jump-animation {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-60px); // Altezza massima del salto
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.player-jumping {
+  animation: jump-animation 0.5s ease; // Regola la durata e l'accelerazione dell'animazione
+}
+
+
 </style>
