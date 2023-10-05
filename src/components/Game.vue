@@ -86,7 +86,7 @@ export default {
   
       var maxPositionX = window.innerWidth;
       var NumberObstacles = Math.floor(Math.random()* (4 - 1 +1))+1
-      
+      const safeZoneWidth = 180;
      
       var obstacleWrapper= document.querySelector('.obstacle-wrapper');
       obstacleWrapper.innerHTML=''
@@ -94,7 +94,7 @@ export default {
         const obstacle = document.createElement('div');
         obstacle.className = 'obstacle';
         obstacle.style.left = `${Math.random() * 100}%`;
-       const randomPositionX = Math.floor(Math.random() * (maxPositionX - this.obstacleWidth));
+       const randomPositionX = Math.floor(Math.random() * (maxPositionX - this.obstacleWidth - 2*safeZoneWidth )+ safeZoneWidth);
        obstacle.style.left = randomPositionX + 'px';
       this.obstacles.push({
         positionX: randomPositionX,
@@ -127,9 +127,12 @@ export default {
     this.obstacles.forEach((obstacle) => {
       console.log('Player:', this.playerPosition, this.playerWidth);
       console.log('Obstacle:', obstacle.positionX, this.obstacleWidth);
+      const playerBottom = parseInt(getComputedStyle(document.getElementById('player')).bottom);
+
       if (
         this.playerPosition + this.playerWidth >= obstacle.positionX &&
-        this.playerPosition <= obstacle.positionX + this.obstacleWidth
+        this.playerPosition <= obstacle.positionX + this.obstacleWidth &&
+        playerBottom <= this.obstacleHeigth
       ){
         // Il personaggio è in contatto con l'ostacolo, segna la collisione ma non bloccare il personaggio
         isColliding = true;
