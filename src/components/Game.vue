@@ -155,6 +155,7 @@ export default {
 restart(){
   this.playerPosition=0;
   this.playerSpeed=10;
+  this.obstacles=[];
   this.gameOver= false;
   this.initializeGame();
 }
@@ -194,5 +195,13 @@ restart(){
     height: 80px;
     position:absolute;
     bottom:0
+  }
+
+  .game-over{
+    position: absolute;
+    left:50%;
+    top:50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
   }
 </style>
