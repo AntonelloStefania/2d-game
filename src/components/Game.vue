@@ -6,13 +6,18 @@ export default {
       playerSpeed: 10, 
       isJumping: false,
       jumpHeight:100,
-      
+      obstacleWidth:50,
+      obstacleHeigth:80,
+      obstacles:[],
+      maxObstacles: 4,
+      playerWidth:100,
     };
   },
   mounted() {
     // Chiamare la funzione per dare il movimento all'avvio
-    this.movePlayer(0); // 0 indica che l'elemento non si muove all'avvio
-
+     this.movePlayer(0); // 0 indica che l'elemento non si muove all'avvio
+     this.initializeGame();
+     console.log(this.obstacles)
     // Aggiungere un ascoltatore di eventi per rilevare i tasti direzionali sinistro e destro
     document.addEventListener('keydown', (event) => {
       if (event.key === 'ArrowLeft' || event.key === 'a' || event.key === 'A') {
@@ -26,6 +31,11 @@ export default {
       }
       
     });
+
+    //verifico collisione ogni 100ms
+    const gameInterval = setInterval(() => {
+      this.updateGame();
+    }, 100);
   },
   methods: {
     movePlayer(direction) {
@@ -53,23 +63,89 @@ export default {
       this.isJumping= false;
       this.movePlayerDown();
     },
+    //funzione che determina il salto
     movePlayerUp(){
       var currentY = parseInt(getComputedStyle(document.getElementById('player')).bottom);
       var newY = currentY + this.jumpHeight;
       document.getElementById('player').style.bottom= newY + 'px';
-      this.playerSpeed = 150
+      this.playerSpeed = 100
       
     },
+    //riporta player a terra
     movePlayerDown(){
       document.getElementById('player').style.bottom= '0px';
       this.playerSpeed = 10
+    },
+
+    //genera ostacoli ad inizio partita
+    initializeGame(){
+  
+      var maxPositionX = window.innerWidth;
+      var NumberObstacles = Math.floor(Math.random()* (4 - 1 +1))+1
+      
+     
+      var obstacleWrapper= document.querySelector('.obstacle-wrapper');
+      obstacleWrapper.innerHTML=''
+      for(let i=1; i<=NumberObstacles; i++){
+        const obstacle = document.createElement('div');
+        obstacle.className = 'obstacle';
+        obstacle.style.left = `${Math.random() * 100}%`;
+       const randomPositionX = Math.floor(Math.random() * (maxPositionX - this.obstacleWidth));
+       obstacle.style.left = randomPositionX + 'px';
+      this.obstacles.push({
+        positionX: randomPositionX,
+      });
+      obstacleWrapper.appendChild(obstacle);
+      }
+
+    },
+    // Funzione di aggiornamento del gioco (chiamata ad intervalli regolari)
+    // updateGame() {
+    //   // Verifica la collisione tra il personaggio e gli ostacoli
+    //   this.obstacles.forEach((obstacle) => {
+    //     if (
+    //       this.playerPosition + this.playerWidth >= obstacle.positionX &&
+    //       this.playerPosition <= obstacle.positionX + obstacle.width
+    //     ) {
+    //       // Il personaggio è in contatto con l'ostacolo, blocca il movimento orizzontale
+    //       this.playerSpeedX = 0;
+    //     }
+    //   });
+
+    //   // Continua a muovere il personaggio se non c'è collisione
+    //   if (this.playerSpeedX !== 0) {
+    //     this.movePlayer(this.playerSpeedX);
+    //   }
+    // },
+    updateGame() {
+  // Verifica collisioni
+  let isColliding = false;
+  this.obstacles.forEach((obstacle) => {
+    console.log('Player:', this.playerPosition, this.playerWidth);
+    console.log('Obstacle:', obstacle.positionX, this.obstacleWidth);
+    if (
+      this.playerPosition + this.playerWidth >= obstacle.positionX &&
+      this.playerPosition <= obstacle.positionX + this.obstacleWidth
+    ){
+      // Il personaggio è in contatto con l'ostacolo, segna la collisione ma non bloccare il personaggio
+      isColliding = true;
+     
     }
-  },
+  });
+  console.log(isColliding);
+
+  // Continua a muovere il personaggio se non c'è collisione
+  // if (this.playerSpeed !== 0) {
+  //   this.movePlayer(this.playerSpeed);
+  // }
+}}
+
 };
 </script>
 <template lang="">
   <div class="game-bg">
     <div id="player" :style="{ left: playerPosition + 'px' }"></div>
+    <div class="obstacle-wrapper"></div>
   </div>
 </template>
 <style lang="scss">
@@ -85,5 +161,13 @@ export default {
     background-color: red;
     position:absolute;
     bottom:0;
+  }
+
+  .obstacle{
+    background-color: brown;
+    width: 50px;
+    height: 80px;
+    position:absolute;
+    bottom:0
   }
 </style>
