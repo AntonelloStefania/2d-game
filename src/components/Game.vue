@@ -195,12 +195,19 @@ export default {
   if (isCollidingHole && !this.isJumping) {
     // Imposta la nuova posizione verticale del giocatore (esempio: bottom: -170px)
     const newBottomPosition = -170;
+    this.gameOver = true;
+      this.playerSpeed=0;
+      this.jumpHeight=0;
     document.getElementById('player').style.bottom = newBottomPosition + 'px';
   }
 },
 restart(){
+  const newBottomPosition =0;
+  document.getElementById('player').style.bottom = newBottomPosition + 'px';
   this.playerPosition=0;
   this.playerSpeed=10;
+  const holeWrapper = document.querySelector('.hole-wrapper');
+  holeWrapper.innerHTML = '';
   this.obstacles=[];
   this.holes=[];
   this.currentLevel=1;
@@ -213,11 +220,13 @@ restart(){
 nextLevel() {
     // Incrementa il livello corrente
     this.currentLevel++;
-
+    const holeWrapper = document.querySelector('.hole-wrapper');
+      holeWrapper.innerHTML = '';
     // Reimposta il giocatore e inizializza il nuovo livello
     this.playerPosition = 0;
     this.playerSpeed = 10;
     this.obstacles = [];
+    this.holes=[];
     this.gameOver = false;
     this.initializeGame();
   },

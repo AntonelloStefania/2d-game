@@ -2,7 +2,7 @@
     {
         "level": 1,
         "maxObstacles": 1,
-        "maxHoles": 0
+        "maxHoles": 1
     },
     {
         "level": 2,
@@ -12,7 +12,7 @@
     {
         "level": 3,
         "maxObstacles": 3,
-        "maxHoles": 0
+        "maxHoles": 1
     },
     {
         "level": 4,
@@ -22,7 +22,7 @@
     {
         "level": 5,
         "maxObstacles": 4,
-        "maxHoles": 1
+        "maxHoles": 0
     },
     {
         "level": 6,
