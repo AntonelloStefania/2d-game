@@ -12,13 +12,15 @@ export default {
       maxObstacles: 4,
       playerWidth:100,
       gameOver:false,
+      currentLevel:1,
+      endLevel: window.innerWidth,
     };
   },
   mounted() {
     // Chiamare la funzione per dare il movimento all'avvio
      this.movePlayer(0); // 0 indica che l'elemento non si muove all'avvio
      this.initializeGame();
-     console.log(this.obstacles)
+    // console.log(this.obstacles)
     // Aggiungere un ascoltatore di eventi per rilevare i tasti direzionali sinistro e destro
     document.addEventListener('keydown', (event) => {
       if (event.key === 'ArrowLeft' || event.key === 'a' || event.key === 'A') {
@@ -34,7 +36,7 @@ export default {
     });
 
     //verifico collisione ogni 100ms
-    const gameInterval = setInterval(() => {
+   setInterval(() => {
       this.updateGame();
     }, 100);
   },
@@ -50,6 +52,8 @@ export default {
         this.playerPosition = 0;
       } else if (this.playerPosition + playerWidth > gameContainerWidth) {
         this.playerPosition = gameContainerWidth - playerWidth;
+      }else if(this.playerPosition >= this.endLevel ){
+        console.log('hai finito il livello')
       }
     },
       //FUNZIONA
@@ -125,8 +129,8 @@ export default {
   // Verifica collisioni
     let isColliding = false;
     this.obstacles.forEach((obstacle) => {
-      console.log('Player:', this.playerPosition, this.playerWidth);
-      console.log('Obstacle:', obstacle.positionX, this.obstacleWidth);
+      //console.log('Player:', this.playerPosition, this.playerWidth);
+     // console.log('Obstacle:', obstacle.positionX, this.obstacleWidth);
       const playerBottom = parseInt(getComputedStyle(document.getElementById('player')).bottom);
 
       if (
@@ -146,7 +150,7 @@ export default {
     
       
     }
-    console.log(this.gameOver)
+    //console.log(this.gameOver)
   // Continua a muovere il personaggio se non c'è collisione
   // if (this.playerSpeed !== 0) {
   //   this.movePlayer(this.playerSpeed);
