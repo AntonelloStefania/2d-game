@@ -6,6 +6,7 @@ export default {
       playerSpeed: 10, 
       isJumping: false,
       jumpHeight:100,
+      
     };
   },
   mounted() {
@@ -23,6 +24,7 @@ export default {
       } else if(event.key === ' '  && !this.isJumping){
         this.startJump()
       }
+      
     });
   },
   methods: {
@@ -55,9 +57,12 @@ export default {
       var currentY = parseInt(getComputedStyle(document.getElementById('player')).bottom);
       var newY = currentY + this.jumpHeight;
       document.getElementById('player').style.bottom= newY + 'px';
+      this.playerSpeed = 150
+      
     },
     movePlayerDown(){
       document.getElementById('player').style.bottom= '0px';
+      this.playerSpeed = 10
     }
   },
 };
