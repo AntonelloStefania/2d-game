@@ -1,5 +1,6 @@
 <script>
 import levels from '../../levels.json'
+import spriteData from '../../spritesheet.json';
 export default {
   data() {
     return {
@@ -19,6 +20,7 @@ export default {
       currentLevel:1,
       endLevel: window.innerWidth,
       levels: levels,
+     // isRunning:false,
     };
   },
   mounted() {
@@ -62,7 +64,20 @@ export default {
         console.log('hai finito il livello')
         this.nextLevel()
       }
-  
+       // Se il giocatore si muove verso destra, imposta l'animazione di corsa
+       const playerElement = document.getElementById('player');
+  if (direction > 0) {
+    // Muovi il giocatore verso destra
+    playerElement.style.transform = 'scaleX(1)'; // Imposta la direzione del giocatore
+    playerElement.classList.add('run-animation'); // Aggiungi classe di animazione
+  } else if (direction < 0) {
+    // Muovi il giocatore verso sinistra
+    playerElement.style.transform = 'scaleX(-1)'; // Imposta la direzione del giocatore
+    playerElement.classList.add('run-animation'); // Aggiungi classe di animazione
+  } else {
+    // Il giocatore è fermo
+    playerElement.classList.remove('run-animation'); // Rimuovi classe di animazione
+  }
     },
  
 
@@ -249,7 +264,7 @@ nextLevel() {
 </script>
 <template lang="">
   <div class="game-bg">
-    <div id="player" :style="{ left: playerPosition + 'px' }"></div>
+    <div id="player" class="idle-sprite" :style="{ left: playerPosition + 'px' }"  ></div>
     <div class="obstacle-wrapper col-8 offset-2"></div>
     <div class="hole-wrapper"></div>
     <div class="game-over" v-if="gameOver">
@@ -268,13 +283,31 @@ nextLevel() {
     background-color: rgb(184, 184, 255);
     position:relative;
   }
-  #player{
+  .run-animation {
+  animation: animateRun 0.3s steps(9) infinite;
+}
+
+/* Imposta l'immagine di sfondo del giocatore */
+#player {
+ 
     width: 100px;
     height: 190px;
-    background-color: red;
-    position:absolute;
-    bottom:0;
+    position: absolute;
+    bottom: 0;
+    background-image: url(spritesheet-run.png);
+    background-repeat: no-repeat;
+    /* background-position: -11px 100px; */
+    animation: run-animation 0.5s steps(9) infinite;
+    background-size: 1095px 140px;
+}
+@keyframes run-animation {
+  0% {
+    background-position: 0 0;
   }
+  100% {
+    background-position: -1000px 100px; /* Imposta la posizione finale in base ai tuoi frame */
+  }
+}
 
   .obstacle{
     background-color: brown;

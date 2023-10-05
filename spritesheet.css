@@ -1,0 +1,69 @@
+.idle-sprite {
+    background-image: url(spritesheet.png);
+    background-repeat: no-repeat;
+    display: block;
+    object-fit: contain;
+    background-position: -1px -1px;
+    animation: animateIdle 1s steps(8) infinite;
+    background-size: 505px auto
+}
+
+.idle-sprite-Idle__000 {
+    width: 100px;
+    height: 190px;
+    background-position: -1px -1px;
+}
+
+.idle-sprite-Idle__001 {
+    width: 100px;
+    height: 190px;
+    background-position: -235px -1px;
+}
+
+.idle-sprite-Idle__002 {
+    width: 100px;
+    height: 190px;
+    background-position: -469px -1px;
+}
+
+.idle-sprite-Idle__003 {
+    width: 100px;
+    height: 190px;
+    background-position: -703px -1px;
+}
+
+.idle-sprite-Idle__004 {
+    width: 100px;
+    height: 190px;
+    background-position: -1px -442px;
+}
+
+.idle-sprite-Idle__005 {
+    width: 100px;
+    height: 190px;
+    background-position: -235px -442px;
+}
+
+.idle-sprite-Idle__006 {
+    width: 100px;
+    height: 190px;
+    background-position: -469px -442px;
+}
+
+.idle-sprite-Idle__007 {
+    width: 100px;
+    height: 190px;
+    background-position: -703px -442px;
+}
+
+.idle-sprite-Idle__008 {
+    width: 100px;
+    height: 190px;
+    background-position: -937px -1px;
+}
+
+.idle-sprite-Idle__009 {
+    width: 100px;
+    height: 190px;
+    background-position: -937px -442px;
+}
