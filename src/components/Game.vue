@@ -11,6 +11,7 @@ export default {
       obstacles:[],
       maxObstacles: 4,
       playerWidth:100,
+      gameOver:false,
     };
   },
   mounted() {
@@ -51,6 +52,7 @@ export default {
         this.playerPosition = gameContainerWidth - playerWidth;
       }
     },
+      //FUNZIONA
     startJump(){
       this.isJumping = true;
       this.movePlayerUp();
@@ -58,6 +60,8 @@ export default {
         this.endJump();
       }, 500)
     },
+
+
 
     endJump(){
       this.isJumping= false;
@@ -119,33 +123,51 @@ export default {
     // },
     updateGame() {
   // Verifica collisioni
-  let isColliding = false;
-  this.obstacles.forEach((obstacle) => {
-    console.log('Player:', this.playerPosition, this.playerWidth);
-    console.log('Obstacle:', obstacle.positionX, this.obstacleWidth);
-    if (
-      this.playerPosition + this.playerWidth >= obstacle.positionX &&
-      this.playerPosition <= obstacle.positionX + this.obstacleWidth
-    ){
-      // Il personaggio è in contatto con l'ostacolo, segna la collisione ma non bloccare il personaggio
-      isColliding = true;
-     
+    let isColliding = false;
+    this.obstacles.forEach((obstacle) => {
+      console.log('Player:', this.playerPosition, this.playerWidth);
+      console.log('Obstacle:', obstacle.positionX, this.obstacleWidth);
+      if (
+        this.playerPosition + this.playerWidth >= obstacle.positionX &&
+        this.playerPosition <= obstacle.positionX + this.obstacleWidth
+      ){
+        // Il personaggio è in contatto con l'ostacolo, segna la collisione ma non bloccare il personaggio
+        isColliding = true;
+      
+      }
+    });
+    console.log(isColliding);
+    if (isColliding) {
+      this.gameOver = true;
+      this.playerSpeed=0;
+    
+      
     }
-  });
-  console.log(isColliding);
-
+    console.log(this.gameOver)
   // Continua a muovere il personaggio se non c'è collisione
   // if (this.playerSpeed !== 0) {
   //   this.movePlayer(this.playerSpeed);
   // }
-}}
+},
+restart(){
+  this.playerPosition=0;
+  this.playerSpeed=10;
+  this.gameOver= false;
+  this.initializeGame();
+}
+
+}
 
 };
 </script>
 <template lang="">
   <div class="game-bg">
     <div id="player" :style="{ left: playerPosition + 'px' }"></div>
-    <div class="obstacle-wrapper"></div>
+    <div class="obstacle-wrapper col-8 offset-2"></div>
+    <div class="game-over" v-if="gameOver">
+    <h1>Game-Over</h1>
+    <button class="btn btn-warning" @click="restart()">restart</button>
+    </div>
   </div>
 </template>
 <style lang="scss">
