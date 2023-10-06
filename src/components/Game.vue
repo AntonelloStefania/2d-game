@@ -29,6 +29,8 @@ export default {
      this.movePlayer(0); // 0 indica che l'elemento non si muove all'avvio
      this.initializeGame();
     // console.log(this.obstacles)
+
+    //FUNZIONA <--------------------------------------------------------------------------------------------------------------------------------------------------
     // Aggiungere un ascoltatore di eventi per rilevare i tasti direzionali sinistro e destro
     document.addEventListener('keydown', (event) => {
       if (event.key === 'ArrowLeft' || event.key === 'a' || event.key === 'A') {
@@ -53,7 +55,9 @@ export default {
       this.movePlayer(0);
     }
   });
-    
+  // FINE FUNZIONANTE <-----------------------------------------------------------------------------------------------------------------------------------------------
+
+
     //verifico collisione ogni 100ms
    setInterval(() => {
       this.updateGame();
@@ -120,7 +124,13 @@ export default {
       var currentY = parseInt(getComputedStyle(document.getElementById('player')).bottom);
       var newY = currentY + this.jumpHeight;
       document.getElementById('player').style.bottom= newY + 'px';
-      this.playerSpeed = 100
+      
+      this.playerSpeed = 120
+      if (newY > 0 && this.playerSpeed == 120) {
+        document.getElementById('player').classList.add('glide');
+      } else if( document.getElementById('player').style.bottom == 0) {
+        document.getElementById('player').classList.remove('glide');
+      }
     },
     //riporta player a terra
     movePlayerDown(){
@@ -304,10 +314,11 @@ nextLevel() {
     background-repeat: no-repeat;
     /* background-position: -11px 100px; */
     background-size: 1113px 140px;
+    
   }
 
   .idle-animation {
-    animation: run-animation 0.5s steps(9) infinite;
+    animation: run-animation 0.8s steps(9) infinite;
     background-image: url(spritesheet-idle.png);
     background-repeat: no-repeat;
     /* background-position: -11px 100px; */
@@ -315,12 +326,23 @@ nextLevel() {
     transform:scaleX(0.7) !important;
   }
 
+
+  //ANIMAZIONE DEL GLIDE MA FUNZIONA MALE
+  // .glide{
+  //   background-image: url(spritesheet-glide.png);
+  //   background-repeat: no-repeat;
+  //   /* background-position: -11px 100px; */
+  //   background-size: 1113px 140px;
+  //   transform:scaleX(0.7) !important;
+  // }
+
 /* Imposta l'immagine di sfondo del giocatore */
 #player {
   width: 109px;
     height: 190px;
     position: absolute;
     bottom: 0;
+    transition: bottom 0.2s ease; 
   
 }
 @keyframes run-animation {
@@ -361,20 +383,21 @@ nextLevel() {
     height: 180px;
 }
 
-@keyframes jump-animation {
-  0% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-60px); // Altezza massima del salto
-  }
-  100% {
-    transform: translateY(0px);
-  }
-}
+// @keyframes jump-animation {
+  
+//   0% {
+//     transform: translateY(0);
+//   }
+//   50% {
+//     transform: translateY(-100px); // Altezza massima del salto
+//   }
+//   100% {
+//     transform: translateY(0px);
+//   }
+// }
 
 .player-jumping {
-  animation: jump-animation 0.5s  steps(9) ease; // Regola la durata e l'accelerazione dell'animazione
+ // animation: jump-animation 0.5s  steps(9) ease-out; // Regola la durata e l'accelerazione dell'animazione
  // animation: run-animation 0.5s infinite;
     background-image: url(spritesheet-jump.png);
     background-repeat: no-repeat;
@@ -382,6 +405,8 @@ nextLevel() {
     background-size: 1113px 140px;
     transform: scaleX(1) !important;
 }
+
+
 
 
 </style>
