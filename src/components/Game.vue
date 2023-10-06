@@ -269,10 +269,13 @@ restart(){
   this.playerSpeed=10;
   document.getElementById('player').classList.remove('player-death');
   const holeWrapper = document.querySelector('.hole-wrapper');
+ 
   holeWrapper.innerHTML = '';
   this.obstacles=[];
   this.holes=[];
   this.currentLevel=1;
+  const backgroundImage = `../../${this.levels.find(level => level.level === this.currentLevel).backgroundImage}`;
+    document.documentElement.style.setProperty('--background-image', `url(${backgroundImage})`);
   this.gameOver= false;
   this.jumpHeight=100;
   this.initializeGame();
@@ -290,6 +293,10 @@ nextLevel() {
     this.obstacles = [];
     this.holes=[];
     this.gameOver = false;
+    
+    const backgroundImage = `../../${this.levels.find(level => level.level === this.currentLevel).backgroundImage}`;
+    document.documentElement.style.setProperty('--background-image', `url(${backgroundImage})`);
+    console.log(backgroundImage)
     this.initializeGame();
   },
 
@@ -317,8 +324,9 @@ nextLevel() {
   .game-bg{
     width: 100vw;
     height:80vh;
-    background-color: rgb(184, 184, 255);
+    background-image: var(--background-image,url(bg-3.jpg));
     position:relative;
+    background-position: center;
   }
   .run-animation {
     animation: run-animation 0.5s steps(9) infinite;

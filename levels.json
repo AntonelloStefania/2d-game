@@ -2,31 +2,37 @@
     {
         "level": 1,
         "maxObstacles": 1,
-        "maxHoles": 1
+        "maxHoles": 1,
+        "backgroundImage": "bg-3.jpg"
     },
     {
         "level": 2,
         "maxObstacles": 2,
-        "maxHoles": 0
+        "maxHoles": 0,
+        "backgroundImage": "bg-3.jpg"
     },
     {
         "level": 3,
         "maxObstacles": 3,
-        "maxHoles": 1
+        "maxHoles": 1,
+        "backgroundImage": "bg-1.jpg"
     },
     {
         "level": 4,
         "maxObstacles": 3,
-        "maxHoles": 1
+        "maxHoles": 1,
+        "backgroundImage": "bg-1.jpg"
     },
     {
         "level": 5,
         "maxObstacles": 4,
-        "maxHoles": 0
+        "maxHoles": 0,
+        "backgroundImage": "bg-2.jpg"
     },
     {
         "level": 6,
         "maxObstacles": 3,
-        "maxHoles": 2
+        "maxHoles": 2,
+        "backgroundImage": "bg-2.jpg"
     }
 ]
