@@ -180,6 +180,9 @@ export default {
         const holeImage = document.createElement('img');
          holeImage.src = `../../leaves.png`; // Assumi che le immagini si chiamino hole1.png, hole2.png, ecc.
          hole.appendChild(holeImage);
+         const holeTrap = document.createElement('div');
+         holeTrap.className='hole-trap';
+         hole.appendChild(holeTrap);
         // Genera una posizione casuale con tolleranza
         const holeRandomPositionX = Math.floor(
           Math.random() * (maxPositionX - visualHoleWidth - 2 * safeZoneWidth) +
@@ -446,7 +449,36 @@ nextLevel() {
     position: absolute;
     right: -25px;
     }
+
+    .hole-trap{
+      width: 100%;
+    bottom: 0px;
+    position: absolute;
+    height: 85px;
+    /* right: 0px; */
+    background-image: url(../../spritesheet-v-trap.png);
+    animation:obstacle-hole-animation 1s steps(9) infinite;
+    background-size: 130px 800px;
+    transform: scaleX(1)  !important;
+    
+    }
 }
+
+@keyframes obstacle-hole-animation {
+  0% {
+    background-position: 0px 0px;
+  }
+  100% {
+    background-position: 0px -720px; /* Regola questo valore in base all'altezza totale del tuo spritesheet */
+  }
+}
+
+
+
+
+
+
+
 
 // @keyframes jump-animation {
   
