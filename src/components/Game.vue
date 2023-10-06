@@ -177,7 +177,9 @@ export default {
       for (let i = 1; i <= NumberHoles; i++) {
         const hole = document.createElement('div');
         hole.className = 'hole';
-        
+        const holeImage = document.createElement('img');
+         holeImage.src = `../../leaves.png`; // Assumi che le immagini si chiamino hole1.png, hole2.png, ecc.
+         hole.appendChild(holeImage);
         // Genera una posizione casuale con tolleranza
         const holeRandomPositionX = Math.floor(
           Math.random() * (maxPositionX - visualHoleWidth - 2 * safeZoneWidth) +
@@ -376,6 +378,7 @@ nextLevel() {
     position: absolute;
     bottom: 0;
     transition: bottom 0.2s ease; 
+    z-index: 200;
   
 }
 .scia{
@@ -431,12 +434,18 @@ nextLevel() {
 }
 .hole{
   background: rgb(36,21,12);
-background: linear-gradient(0deg, rgba(36,21,12,1) 35%, rgba(122,69,38,1) 76%, rgba(141,191,73,1) 92%); 
-    position: absolute;
-    bottom:-180px;
+  background: linear-gradient(0deg, rgba(36,21,12,1) 35%, rgba(122,69,38,1) 76%, rgba(141,191,73,1) 92%); 
+  position: absolute;
+  bottom:-180px;
     
     width: 80px;
     height: 180px;
+    img{
+      width: 235px;
+    bottom: 65px;
+    position: absolute;
+    right: -25px;
+    }
 }
 
 // @keyframes jump-animation {
@@ -461,7 +470,6 @@ background: linear-gradient(0deg, rgba(36,21,12,1) 35%, rgba(122,69,38,1) 76%, r
     background-size: 1113px 140px;
     transform: scaleX(1) !important;
 }
-
 
 
 
