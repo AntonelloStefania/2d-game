@@ -397,12 +397,27 @@ nextLevel() {
 
 
   .obstacle{
-    background-color: brown;
+   background-image: url(../../spritesheet-trap.png);
     width: 50px;
     height: 80px;
     position:absolute;
-    bottom:0
+    bottom:0;
+    animation:obstacle-animation 1s steps(9) infinite;
+
+    /* background-position: -11px 100px; */
+    background-size: 580px 140px;
+    transform: scaleX(1) !important;
   }
+
+
+  @keyframes obstacle-animation {
+  0% {
+    background-position: 0px 0px;
+  }
+  100% {
+    background-position: -520px 0px; /* Verifica questo valore in base alla larghezza totale del tuo spritesheet */
+  }
+}
 
   .game-over{
     position: absolute;
@@ -415,7 +430,8 @@ nextLevel() {
   display: none;
 }
 .hole{
-  background-color: red;
+  background: rgb(36,21,12);
+background: linear-gradient(0deg, rgba(36,21,12,1) 35%, rgba(122,69,38,1) 76%, rgba(141,191,73,1) 92%); 
     position: absolute;
     bottom:-180px;
     
