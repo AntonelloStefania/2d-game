@@ -225,9 +225,11 @@ export default {
       this.playerSpeed=0;
       this.jumpHeight=0;
       document.getElementById('player').classList.remove('player-jumping');
+      document.getElementById('player').classList.add('player-death');
+
     
-      
     }
+    
 
 
     //PROVA COLLISIONE BUCHI
@@ -254,6 +256,9 @@ export default {
       this.playerSpeed=0;
       this.jumpHeight=0;
       document.getElementById('player').classList.remove('player-jumping');
+      document.getElementById('player').classList.add('player-death');
+
+
      document.getElementById('player').style.bottom = newBottomPosition + 'px';
   }
 },
@@ -262,6 +267,7 @@ restart(){
   document.getElementById('player').style.bottom = newBottomPosition + 'px';
   this.playerPosition=0;
   this.playerSpeed=10;
+  document.getElementById('player').classList.remove('player-death');
   const holeWrapper = document.querySelector('.hole-wrapper');
   holeWrapper.innerHTML = '';
   this.obstacles=[];
@@ -331,6 +337,18 @@ nextLevel() {
     background-size: 1113px 140px;
     transform:scaleX(0.7) !important;
   }
+
+  .player-death{
+   // animation: 2s steps(9) infinite;
+  
+    background-image: url(spritesheet-death.png);
+    // background-repeat: no-repeat;
+
+    /* background-position: -11px 100px; */
+    background-size: 1113px 140px;
+    transform:scaleX(1.2) !important;
+  }
+
 
 
   //ANIMAZIONE DEL GLIDE MA FUNZIONA MALE
