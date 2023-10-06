@@ -94,6 +94,7 @@ export default {
         // Il giocatore è fermo NON CI ENTRO MAI, NON RIESCO A PASSARE DA RUN A IDLE
         this.isRunning = false;
         document.getElementById('player').classList.remove('run-animation');
+        document.querySelector('.scia').classList.add('d-none');
         document.getElementById('player').classList.add('idle-sprite');
       }
       console.log(this.isRunning)
@@ -126,16 +127,19 @@ export default {
       document.getElementById('player').style.bottom= newY + 'px';
       
       this.playerSpeed = 120
-      if (newY > 0 && this.playerSpeed == 120) {
-        document.getElementById('player').classList.add('glide');
-      } else if( document.getElementById('player').style.bottom == 0) {
-        document.getElementById('player').classList.remove('glide');
-      }
+      if ( this.playerSpeed == 120) {
+        document.querySelector('.scia').classList.remove('d-none');
+      } 
+       
+      
     },
     //riporta player a terra
     movePlayerDown(){
+      
       document.getElementById('player').style.bottom= '0px';
+      document.querySelector('.scia').classList.add('d-none');
       this.playerSpeed = 10
+      this.isRunning= false
     },
 
   
@@ -289,7 +293,9 @@ nextLevel() {
 </script>
 <template lang="">
   <div class="game-bg">
-    <div id="player"  :style="{ left: playerPosition + 'px' }"  :class="{ 'run-animation': isRunning,'idle-animation': !isRunning }"></div>
+    <div id="player"  :style="{ left: playerPosition + 'px' }"  :class="{ 'run-animation': isRunning,'idle-animation': !isRunning }">
+      <img src="../../scia.png" id="line" class="scia d-none"  style="left:0" alt="">
+    </div>
     <div class="obstacle-wrapper col-8 offset-2"></div>
     <div class="hole-wrapper"></div>
     <div class="game-over" v-if="gameOver">
@@ -336,6 +342,7 @@ nextLevel() {
   //   transform:scaleX(0.7) !important;
   // }
 
+
 /* Imposta l'immagine di sfondo del giocatore */
 #player {
   width: 109px;
@@ -345,6 +352,13 @@ nextLevel() {
     transition: bottom 0.2s ease; 
   
 }
+.scia{
+  width: 318px;
+    position: relative;
+    left: -211px !important;
+    bottom: -15px !important;
+}
+
 @keyframes run-animation {
   0% {
     background-position:  0px 60px;;
