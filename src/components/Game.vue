@@ -1,7 +1,6 @@
 <script>
 import levels from '../../levels.json'
-import spriteData from '../../spritesheet.json';
-import spriteIdle from '../../spritesheet-idle.json';
+
 export default {
   data() {
     return {
@@ -189,8 +188,6 @@ export default {
             safeZoneWidth
         );
 
-      
-       // hole.style.left = holeRandomPositionX - tolerance + 'px';
 
         // Imposta la larghezza visiva del buco
         hole.style.width = visualHoleWidth + 'px';
@@ -210,8 +207,7 @@ export default {
   // Verifica collisioni
     let isColliding = false;
     this.obstacles.forEach((obstacle) => {
-      //console.log('Player:', this.playerPosition, this.playerWidth);
-     // console.log('Obstacle:', obstacle.positionX, this.obstacleWidth);
+
       var playerBottom = parseInt(getComputedStyle(document.getElementById('player')).bottom);
 
       if (
@@ -234,8 +230,6 @@ export default {
 
     
     }
-    
-
 
     //PROVA COLLISIONE BUCHI
     let isCollidingHole = false;
@@ -337,7 +331,6 @@ nextLevel() {
     animation: run-animation 0.5s steps(9) infinite;
     background-image: url(spritesheet-run.png);
     background-repeat: no-repeat;
-    /* background-position: -11px 100px; */
     background-size: 1113px 140px;
     
   }
@@ -346,32 +339,16 @@ nextLevel() {
     animation: run-animation 0.8s steps(9) infinite;
     background-image: url(spritesheet-idle.png);
     background-repeat: no-repeat;
-    /* background-position: -11px 100px; */
     background-size: 1113px 140px;
     transform:scaleX(0.7) !important;
   }
 
   .player-death{
-   // animation: 2s steps(9) infinite;
-  
     background-image: url(spritesheet-death.png);
-    // background-repeat: no-repeat;
-
-    /* background-position: -11px 100px; */
     background-size: 1113px 140px;
     transform:scaleX(1.2) !important;
   }
 
-
-
-  //ANIMAZIONE DEL GLIDE MA FUNZIONA MALE
-  // .glide{
-  //   background-image: url(spritesheet-glide.png);
-  //   background-repeat: no-repeat;
-  //   /* background-position: -11px 100px; */
-  //   background-size: 1113px 140px;
-  //   transform:scaleX(0.7) !important;
-  // }
 
 
 /* Imposta l'immagine di sfondo del giocatore */
@@ -409,8 +386,6 @@ nextLevel() {
     position:absolute;
     bottom:0;
     animation:obstacle-animation 1s steps(9) infinite;
-
-    /* background-position: -11px 100px; */
     background-size: 580px 140px;
     transform: scaleX(1) !important;
   }
@@ -455,7 +430,6 @@ nextLevel() {
     bottom: 0px;
     position: absolute;
     height: 85px;
-    /* right: 0px; */
     background-image: url(../../spritesheet-v-trap.png);
     animation:obstacle-hole-animation 1s steps(9) infinite;
     background-size: 130px 800px;
@@ -475,30 +449,10 @@ nextLevel() {
 
 
 
-
-
-
-
-
-// @keyframes jump-animation {
-  
-//   0% {
-//     transform: translateY(0);
-//   }
-//   50% {
-//     transform: translateY(-100px); // Altezza massima del salto
-//   }
-//   100% {
-//     transform: translateY(0px);
-//   }
-// }
-
 .player-jumping {
- // animation: jump-animation 0.5s  steps(9) ease-out; // Regola la durata e l'accelerazione dell'animazione
- // animation: run-animation 0.5s infinite;
+
     background-image: url(spritesheet-jump.png);
     background-repeat: no-repeat;
-    /* background-position: -11px 100px; */
     background-size: 1113px 140px;
     transform: scaleX(1) !important;
 }
