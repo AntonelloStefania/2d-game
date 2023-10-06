@@ -1,6 +1,7 @@
 <script>
 import levels from '../../levels.json'
 import spriteData from '../../spritesheet.json';
+import spriteIdle from '../../spritesheet-idle.json';
 export default {
   data() {
     return {
@@ -41,7 +42,18 @@ export default {
       }
       
     });
-
+      // Aggiungi un ascoltatore di eventi per il rilascio dei tasti direzionali
+  document.addEventListener('keyup', (event) => {
+    if (
+      (event.key === 'ArrowLeft' || event.key === 'a' || event.key === 'A' || 
+      event.key === 'ArrowRight' || event.key === 'd' || event.key === 'D') && 
+      !this.isJumping
+    ) {
+      // Rilascio del pulsante direzionale, impostare direction su 0
+      this.movePlayer(0);
+    }
+  });
+    
     //verifico collisione ogni 100ms
    setInterval(() => {
       this.updateGame();
@@ -51,7 +63,7 @@ export default {
     movePlayer(direction) {
       // Calcola la nuova posizione in base alla direzione
       this.playerPosition += direction;
-
+      console.log(direction)
       // Assicurati che l'elemento "player" non esca dalla larghezza del contenitore
       const gameContainerWidth = document.querySelector('.game-bg').offsetWidth;
       const playerWidth = document.getElementById('player').offsetWidth;
@@ -74,13 +86,13 @@ export default {
         // Muovi il giocatore verso sinistra
         playerElement.style.transform = 'scaleX(-1)'; // Imposta la direzione del giocatore
         this.isRunning = true; // Aggiungi classe di animazione
-      } else { 
+      } else if (direction==0) { 
         // Il giocatore è fermo NON CI ENTRO MAI, NON RIESCO A PASSARE DA RUN A IDLE
         this.isRunning = false;
-       
         document.getElementById('player').classList.remove('run-animation');
         document.getElementById('player').classList.add('idle-sprite');
       }
+      console.log(this.isRunning)
     },
  
 
@@ -193,7 +205,7 @@ export default {
       
       }
     });
-    console.log(isColliding);
+   // console.log(isColliding);
     if (isColliding) {
       this.gameOver = true;
       this.playerSpeed=0;
@@ -217,7 +229,7 @@ export default {
   ) {
     isCollidingHole = true;
   }
-  console.log(isCollidingHole)
+ // console.log(isCollidingHole)
 });
 
   // Se c'è una collisione con un buco, aggiorna la posizione del giocatore solo se non sta saltando
@@ -267,7 +279,7 @@ nextLevel() {
 </script>
 <template lang="">
   <div class="game-bg">
-    <div id="player"  :style="{ left: playerPosition + 'px' }"  :class="{ 'run-animation': isRunning }"></div>
+    <div id="player"  :style="{ left: playerPosition + 'px' }"  :class="{ 'run-animation': isRunning,'idle-animation': !isRunning }"></div>
     <div class="obstacle-wrapper col-8 offset-2"></div>
     <div class="hole-wrapper"></div>
     <div class="game-over" v-if="gameOver">
@@ -294,6 +306,15 @@ nextLevel() {
     background-size: 1113px 140px;
   }
 
+  .idle-animation {
+    animation: run-animation 0.5s steps(9) infinite;
+    background-image: url(spritesheet-idle.png);
+    background-repeat: no-repeat;
+    /* background-position: -11px 100px; */
+    background-size: 1113px 140px;
+    transform:scaleX(0.7) !important;
+  }
+
 /* Imposta l'immagine di sfondo del giocatore */
 #player {
   width: 109px;
@@ -311,6 +332,7 @@ nextLevel() {
    
   }
 }
+
 
   .obstacle{
     background-color: brown;
@@ -352,7 +374,13 @@ nextLevel() {
 }
 
 .player-jumping {
-  animation: jump-animation 0.5s ease; // Regola la durata e l'accelerazione dell'animazione
+  animation: jump-animation 0.5s  steps(9) ease; // Regola la durata e l'accelerazione dell'animazione
+ // animation: run-animation 0.5s infinite;
+    background-image: url(spritesheet-jump.png);
+    background-repeat: no-repeat;
+    /* background-position: -11px 100px; */
+    background-size: 1113px 140px;
+    transform: scaleX(1) !important;
 }
 
 
