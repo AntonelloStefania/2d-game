@@ -1,5 +1,7 @@
 <script>
 import levels from '../../levels.json'
+import spriteData from '../../spritesheet.json';
+import spriteIdle from '../../spritesheet-idle.json';
 export default {
   data() {
     return {
@@ -19,6 +21,7 @@ export default {
       currentLevel:1,
       endLevel: window.innerWidth,
       levels: levels,
+      isRunning:false,
     };
   },
   mounted() {
@@ -26,6 +29,8 @@ export default {
      this.movePlayer(0); // 0 indica che l'elemento non si muove all'avvio
      this.initializeGame();
     // console.log(this.obstacles)
+
+    //FUNZIONA <--------------------------------------------------------------------------------------------------------------------------------------------------
     // Aggiungere un ascoltatore di eventi per rilevare i tasti direzionali sinistro e destro
     document.addEventListener('keydown', (event) => {
       if (event.key === 'ArrowLeft' || event.key === 'a' || event.key === 'A') {
@@ -39,6 +44,19 @@ export default {
       }
       
     });
+      // Aggiungi un ascoltatore di eventi per il rilascio dei tasti direzionali
+  document.addEventListener('keyup', (event) => {
+    if (
+      (event.key === 'ArrowLeft' || event.key === 'a' || event.key === 'A' || 
+      event.key === 'ArrowRight' || event.key === 'd' || event.key === 'D') && 
+      !this.isJumping
+    ) {
+      // Rilascio del pulsante direzionale, impostare direction su 0
+      this.movePlayer(0);
+    }
+  });
+  // FINE FUNZIONANTE <-----------------------------------------------------------------------------------------------------------------------------------------------
+
 
     //verifico collisione ogni 100ms
    setInterval(() => {
@@ -49,7 +67,7 @@ export default {
     movePlayer(direction) {
       // Calcola la nuova posizione in base alla direzione
       this.playerPosition += direction;
-
+      console.log(direction)
       // Assicurati che l'elemento "player" non esca dalla larghezza del contenitore
       const gameContainerWidth = document.querySelector('.game-bg').offsetWidth;
       const playerWidth = document.getElementById('player').offsetWidth;
@@ -62,7 +80,24 @@ export default {
         console.log('hai finito il livello')
         this.nextLevel()
       }
-  
+       // Se il giocatore si muove verso destra, imposta l'animazione di corsa
+       const playerElement = document.getElementById('player');
+      if (direction > 0) {
+        // Muovi il giocatore verso destra
+        playerElement.style.transform = 'scaleX(1)'; // Imposta la direzione del giocatore
+        this.isRunning = true; // Aggiungi classe di animazione
+      } else if (direction < 0) {
+        // Muovi il giocatore verso sinistra
+        playerElement.style.transform = 'scaleX(-1)'; // Imposta la direzione del giocatore
+        this.isRunning = true; // Aggiungi classe di animazione
+      } else if (direction==0) { 
+        // Il giocatore è fermo NON CI ENTRO MAI, NON RIESCO A PASSARE DA RUN A IDLE
+        this.isRunning = false;
+        document.getElementById('player').classList.remove('run-animation');
+        document.querySelector('.scia').classList.add('d-none');
+        document.getElementById('player').classList.add('idle-sprite');
+      }
+      console.log(this.isRunning)
     },
  
 
@@ -90,12 +125,21 @@ export default {
       var currentY = parseInt(getComputedStyle(document.getElementById('player')).bottom);
       var newY = currentY + this.jumpHeight;
       document.getElementById('player').style.bottom= newY + 'px';
-      this.playerSpeed = 100
+      
+      this.playerSpeed = 120
+      if ( this.playerSpeed == 120) {
+        document.querySelector('.scia').classList.remove('d-none');
+      } 
+       
+      
     },
     //riporta player a terra
     movePlayerDown(){
+      
       document.getElementById('player').style.bottom= '0px';
+      document.querySelector('.scia').classList.add('d-none');
       this.playerSpeed = 10
+      this.isRunning= false
     },
 
   
@@ -175,15 +219,17 @@ export default {
       
       }
     });
-    console.log(isColliding);
+   // console.log(isColliding);
     if (isColliding) {
       this.gameOver = true;
       this.playerSpeed=0;
       this.jumpHeight=0;
       document.getElementById('player').classList.remove('player-jumping');
+      document.getElementById('player').classList.add('player-death');
+
     
-      
     }
+    
 
 
     //PROVA COLLISIONE BUCHI
@@ -199,7 +245,7 @@ export default {
   ) {
     isCollidingHole = true;
   }
-  console.log(isCollidingHole)
+ // console.log(isCollidingHole)
 });
 
   // Se c'è una collisione con un buco, aggiorna la posizione del giocatore solo se non sta saltando
@@ -210,6 +256,9 @@ export default {
       this.playerSpeed=0;
       this.jumpHeight=0;
       document.getElementById('player').classList.remove('player-jumping');
+      document.getElementById('player').classList.add('player-death');
+
+
      document.getElementById('player').style.bottom = newBottomPosition + 'px';
   }
 },
@@ -218,11 +267,15 @@ restart(){
   document.getElementById('player').style.bottom = newBottomPosition + 'px';
   this.playerPosition=0;
   this.playerSpeed=10;
+  document.getElementById('player').classList.remove('player-death');
   const holeWrapper = document.querySelector('.hole-wrapper');
+ 
   holeWrapper.innerHTML = '';
   this.obstacles=[];
   this.holes=[];
   this.currentLevel=1;
+  const backgroundImage = `../../${this.levels.find(level => level.level === this.currentLevel).backgroundImage}`;
+    document.documentElement.style.setProperty('--background-image', `url(${backgroundImage})`);
   this.gameOver= false;
   this.jumpHeight=100;
   this.initializeGame();
@@ -240,6 +293,10 @@ nextLevel() {
     this.obstacles = [];
     this.holes=[];
     this.gameOver = false;
+    
+    const backgroundImage = `../../${this.levels.find(level => level.level === this.currentLevel).backgroundImage}`;
+    document.documentElement.style.setProperty('--background-image', `url(${backgroundImage})`);
+    console.log(backgroundImage)
     this.initializeGame();
   },
 
@@ -249,7 +306,9 @@ nextLevel() {
 </script>
 <template lang="">
   <div class="game-bg">
-    <div id="player" :style="{ left: playerPosition + 'px' }"></div>
+    <div id="player"  :style="{ left: playerPosition + 'px' }"  :class="{ 'run-animation': isRunning,'idle-animation': !isRunning }">
+      <img src="../../scia.png" id="line" class="scia d-none"  style="left:0" alt="">
+    </div>
     <div class="obstacle-wrapper col-8 offset-2"></div>
     <div class="hole-wrapper"></div>
     <div class="game-over" v-if="gameOver">
@@ -265,16 +324,77 @@ nextLevel() {
   .game-bg{
     width: 100vw;
     height:80vh;
-    background-color: rgb(184, 184, 255);
+    background-image: var(--background-image,url(bg-3.jpg));
     position:relative;
+    background-position: center;
   }
-  #player{
-    width: 100px;
+  .run-animation {
+    animation: run-animation 0.5s steps(9) infinite;
+    background-image: url(spritesheet-run.png);
+    background-repeat: no-repeat;
+    /* background-position: -11px 100px; */
+    background-size: 1113px 140px;
+    
+  }
+
+  .idle-animation {
+    animation: run-animation 0.8s steps(9) infinite;
+    background-image: url(spritesheet-idle.png);
+    background-repeat: no-repeat;
+    /* background-position: -11px 100px; */
+    background-size: 1113px 140px;
+    transform:scaleX(0.7) !important;
+  }
+
+  .player-death{
+   // animation: 2s steps(9) infinite;
+  
+    background-image: url(spritesheet-death.png);
+    // background-repeat: no-repeat;
+
+    /* background-position: -11px 100px; */
+    background-size: 1113px 140px;
+    transform:scaleX(1.2) !important;
+  }
+
+
+
+  //ANIMAZIONE DEL GLIDE MA FUNZIONA MALE
+  // .glide{
+  //   background-image: url(spritesheet-glide.png);
+  //   background-repeat: no-repeat;
+  //   /* background-position: -11px 100px; */
+  //   background-size: 1113px 140px;
+  //   transform:scaleX(0.7) !important;
+  // }
+
+
+/* Imposta l'immagine di sfondo del giocatore */
+#player {
+  width: 109px;
     height: 190px;
-    background-color: red;
-    position:absolute;
-    bottom:0;
+    position: absolute;
+    bottom: 0;
+    transition: bottom 0.2s ease; 
+  
+}
+.scia{
+  width: 318px;
+    position: relative;
+    left: -211px !important;
+    bottom: -15px !important;
+}
+
+@keyframes run-animation {
+  0% {
+    background-position:  0px 60px;;
   }
+  100% {
+    background-position: -1000px 60px; /* Imposta la posizione finale in base ai tuoi frame */
+   
+  }
+}
+
 
   .obstacle{
     background-color: brown;
@@ -303,21 +423,30 @@ nextLevel() {
     height: 180px;
 }
 
-@keyframes jump-animation {
-  0% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-60px); // Altezza massima del salto
-  }
-  100% {
-    transform: translateY(0px);
-  }
-}
+// @keyframes jump-animation {
+  
+//   0% {
+//     transform: translateY(0);
+//   }
+//   50% {
+//     transform: translateY(-100px); // Altezza massima del salto
+//   }
+//   100% {
+//     transform: translateY(0px);
+//   }
+// }
 
 .player-jumping {
-  animation: jump-animation 0.5s ease; // Regola la durata e l'accelerazione dell'animazione
+ // animation: jump-animation 0.5s  steps(9) ease-out; // Regola la durata e l'accelerazione dell'animazione
+ // animation: run-animation 0.5s infinite;
+    background-image: url(spritesheet-jump.png);
+    background-repeat: no-repeat;
+    /* background-position: -11px 100px; */
+    background-size: 1113px 140px;
+    transform: scaleX(1) !important;
 }
+
+
 
 
 </style>
